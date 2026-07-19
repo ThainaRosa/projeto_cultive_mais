@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
 use Orchid\Filters\Types\Like;
 use Orchid\Filters\Types\Where;
@@ -111,5 +112,20 @@ class User extends Authenticatable
             'role' => self::ROLE_ADMIN,
             'permissions' => Dashboard::getAllowAllPermission(),
         ]);
+    }
+
+    public function wasteRecords(): HasMany
+    {
+        return $this->hasMany(WasteRecord::class);
+    }
+
+    public function residentCollectionRequests(): HasMany
+    {
+        return $this->hasMany(CollectionRequest::class, 'resident_id');
+    }
+
+    public function partnerCollectionRequests(): HasMany
+    {
+        return $this->hasMany(CollectionRequest::class, 'partner_id');
     }
 }
