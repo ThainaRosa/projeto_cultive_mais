@@ -23,3 +23,13 @@ O desenvolvimento será realizado em incrementos pequenos, cada um validado e ve
 - MySQL 8 ou compatível
 
 > As credenciais locais pertencem exclusivamente ao arquivo `.env`, que não é versionado. Use `.env.example` como ponto de partida.
+
+## Administração
+
+O painel administrativo está disponível em `/admin`. Após configurar o banco e executar as migrations, crie o primeiro administrador localmente com:
+
+```bash
+php artisan orchid:admin
+```
+
+O comando solicita nome, e-mail e senha de forma interativa; nenhuma credencial padrão é incluída no projeto.
