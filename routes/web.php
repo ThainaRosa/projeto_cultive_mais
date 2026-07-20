@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Partner\CollectionRequestController as PartnerCollectionRequestController;
+use App\Http\Controllers\Partner\DashboardController as PartnerDashboardController;
 use App\Http\Controllers\Resident\CollectionRequestController;
-use App\Http\Controllers\Resident\DashboardController;
+use App\Http\Controllers\Resident\DashboardController as ResidentDashboardController;
 use App\Http\Controllers\Resident\WasteRecordController;
 use App\Models\CollectionPoint;
 use Illuminate\Support\Facades\Route;
@@ -21,10 +24,15 @@ Route::get('/pontos-de-coleta', function () {
     ]);
 })->name('collection-points');
 
-Route::middleware(['auth', 'verified', 'resident'])->group(function () {
-    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-    Route::prefix('morador')->name('resident.')->group(function () {
+Route::middleware(['auth', 'verified', 'resident'])
+    ->prefix('morador')
+    ->name('resident.')
+    ->group(function () {
+        Route::get('/dashboard', ResidentDashboardController::class)->name('dashboard');
         Route::get('/residuos', [WasteRecordController::class, 'index'])->name('waste-records.index');
         Route::get('/residuos/cadastrar', [WasteRecordController::class, 'create'])->name('waste-records.create');
         Route::post('/residuos', [WasteRecordController::class, 'store'])->name('waste-records.store');
@@ -38,4 +46,16 @@ Route::middleware(['auth', 'verified', 'resident'])->group(function () {
         Route::get('/solicitacoes/{collectionRequest}', [CollectionRequestController::class, 'show'])->name('collection-requests.show');
         Route::patch('/solicitacoes/{collectionRequest}/cancelar', [CollectionRequestController::class, 'cancel'])->name('collection-requests.cancel');
     });
-});
+
+Route::middleware(['auth', 'verified', 'partner'])
+    ->prefix('parceiro')
+    ->name('partner.')
+    ->group(function () {
+        Route::get('/dashboard', PartnerDashboardController::class)->name('dashboard');
+        Route::get('/solicitacoes/pendentes', [PartnerCollectionRequestController::class, 'pending'])->name('collection-requests.pending');
+        Route::get('/solicitacoes/aceitas', [PartnerCollectionRequestController::class, 'accepted'])->name('collection-requests.accepted');
+        Route::get('/solicitacoes/{collectionRequest}', [PartnerCollectionRequestController::class, 'show'])->name('collection-requests.show');
+        Route::post('/solicitacoes/{collectionRequest}/aceitar', [PartnerCollectionRequestController::class, 'accept'])->name('collection-requests.accept');
+        Route::patch('/solicitacoes/{collectionRequest}/concluir', [PartnerCollectionRequestController::class, 'complete'])->name('collection-requests.complete');
+        Route::patch('/solicitacoes/{collectionRequest}/cancelar', [PartnerCollectionRequestController::class, 'cancel'])->name('collection-requests.cancel');
+    });

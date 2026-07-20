@@ -18,7 +18,7 @@ class ResidentWasteManagementTest extends TestCase
         $partner = User::factory()->create(['role' => User::ROLE_PARTNER]);
 
         $this->actingAs($partner)
-            ->get(route('dashboard'))
+            ->get(route('resident.dashboard'))
             ->assertForbidden();
     }
 
