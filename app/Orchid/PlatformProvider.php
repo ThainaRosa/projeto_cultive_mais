@@ -8,7 +8,6 @@ use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
 use Orchid\Screen\Actions\Menu;
-use Orchid\Support\Color;
 
 class PlatformProvider extends OrchidServiceProvider
 {
@@ -30,61 +29,35 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
-            Menu::make('Get Started')
-                ->icon('bs.book')
-                ->title('Navigation')
+            Menu::make('Dashboard')
+                ->icon('bs.speedometer2')
+                ->title('Administração')
                 ->route(config('platform.index')),
 
-            Menu::make('Sample Screen')
-                ->icon('bs.collection')
-                ->route('platform.example')
-                ->badge(fn () => 6),
-
-            Menu::make('Form Elements')
-                ->icon('bs.card-list')
-                ->route('platform.example.fields')
-                ->active('*/examples/form/*'),
-
-            Menu::make('Layouts Overview')
-                ->icon('bs.window-sidebar')
-                ->route('platform.example.layouts'),
-
-            Menu::make('Grid System')
-                ->icon('bs.columns-gap')
-                ->route('platform.example.grid'),
-
-            Menu::make('Charts')
-                ->icon('bs.bar-chart')
-                ->route('platform.example.charts'),
-
-            Menu::make('Cards')
-                ->icon('bs.card-text')
-                ->route('platform.example.cards')
-                ->divider(),
-
-            Menu::make(__('Users'))
+            Menu::make('Usuários')
                 ->icon('bs.people')
                 ->route('platform.systems.users')
-                ->permission('platform.systems.users')
-                ->title(__('Access Controls')),
+                ->permission('platform.systems.users'),
 
-            Menu::make(__('Roles'))
-                ->icon('bs.shield')
-                ->route('platform.systems.roles')
-                ->permission('platform.systems.roles')
-                ->divider(),
+            Menu::make('Categorias de resíduos')
+                ->icon('bs.tags')
+                ->route('platform.categories')
+                ->permission('platform.categories'),
 
-            Menu::make('Documentation')
-                ->title('Docs')
-                ->icon('bs.box-arrow-up-right')
-                ->url('https://orchid.software/en/docs')
-                ->target('_blank'),
+            Menu::make('Pontos de coleta')
+                ->icon('bs.geo-alt')
+                ->route('platform.collection-points')
+                ->permission('platform.collection-points'),
 
-            Menu::make('Changelog')
-                ->icon('bs.box-arrow-up-right')
-                ->url('https://github.com/orchidsoftware/platform/blob/master/CHANGELOG.md')
-                ->target('_blank')
-                ->badge(fn () => Dashboard::version(), Color::DARK),
+            Menu::make('Resíduos')
+                ->icon('bs.recycle')
+                ->route('platform.waste-records')
+                ->permission('platform.waste-records'),
+
+            Menu::make('Solicitações')
+                ->icon('bs.truck')
+                ->route('platform.collection-requests')
+                ->permission('platform.collection-requests'),
         ];
     }
 
@@ -97,8 +70,11 @@ class PlatformProvider extends OrchidServiceProvider
     {
         return [
             ItemPermission::group(__('System'))
-                ->addPermission('platform.systems.roles', __('Roles'))
-                ->addPermission('platform.systems.users', __('Users')),
+                ->addPermission('platform.systems.users', 'Usuários')
+                ->addPermission('platform.categories', 'Categorias de resíduos')
+                ->addPermission('platform.collection-points', 'Pontos de coleta')
+                ->addPermission('platform.waste-records', 'Resíduos')
+                ->addPermission('platform.collection-requests', 'Solicitações'),
         ];
     }
 }

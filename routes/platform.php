@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\CollectionPoint\CollectionPointEditScreen;
+use App\Orchid\Screens\CollectionPoint\CollectionPointListScreen;
+use App\Orchid\Screens\CollectionRequest\CollectionRequestListScreen;
+use App\Orchid\Screens\CollectionRequest\CollectionRequestViewScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -17,6 +21,10 @@ use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
+use App\Orchid\Screens\WasteCategory\WasteCategoryEditScreen;
+use App\Orchid\Screens\WasteCategory\WasteCategoryListScreen;
+use App\Orchid\Screens\WasteRecord\WasteRecordListScreen;
+use App\Orchid\Screens\WasteRecord\WasteRecordViewScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -49,19 +57,36 @@ Route::screen('users/{user}/edit', UserEditScreen::class)
         ->parent('platform.systems.users')
         ->push($user->name, route('platform.systems.users.edit', $user)));
 
-// Platform > System > Users > Create
-Route::screen('users/create', UserEditScreen::class)
-    ->name('platform.systems.users.create')
-    ->breadcrumbs(fn (Trail $trail) => $trail
-        ->parent('platform.systems.users')
-        ->push(__('Create'), route('platform.systems.users.create')));
-
 // Platform > System > Users
 Route::screen('users', UserListScreen::class)
     ->name('platform.systems.users')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Users'), route('platform.systems.users')));
+
+Route::screen('categories/create', WasteCategoryEditScreen::class)
+    ->name('platform.categories.create');
+Route::screen('categories/{category}/edit', WasteCategoryEditScreen::class)
+    ->name('platform.categories.edit');
+Route::screen('categories', WasteCategoryListScreen::class)
+    ->name('platform.categories');
+
+Route::screen('collection-points/create', CollectionPointEditScreen::class)
+    ->name('platform.collection-points.create');
+Route::screen('collection-points/{collectionPoint}/edit', CollectionPointEditScreen::class)
+    ->name('platform.collection-points.edit');
+Route::screen('collection-points', CollectionPointListScreen::class)
+    ->name('platform.collection-points');
+
+Route::screen('waste-records/{wasteRecord}', WasteRecordViewScreen::class)
+    ->name('platform.waste-records.show');
+Route::screen('waste-records', WasteRecordListScreen::class)
+    ->name('platform.waste-records');
+
+Route::screen('collection-requests/{collectionRequest}', CollectionRequestViewScreen::class)
+    ->name('platform.collection-requests.show');
+Route::screen('collection-requests', CollectionRequestListScreen::class)
+    ->name('platform.collection-requests');
 
 // Platform > System > Roles > Role
 Route::screen('roles/{role}/edit', RoleEditScreen::class)

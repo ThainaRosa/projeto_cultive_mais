@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens;
 
-use Orchid\Screen\Action;
+use App\Models\CollectionRequest;
+use App\Models\User;
+use App\Models\WasteRecord;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 
@@ -17,7 +19,16 @@ class PlatformScreen extends Screen
      */
     public function query(): iterable
     {
-        return [];
+        return [
+            'metrics' => [
+                'users' => ['value' => User::query()->count()],
+                'residents' => ['value' => User::query()->where('role', User::ROLE_RESIDENT)->count()],
+                'partners' => ['value' => User::query()->where('role', User::ROLE_PARTNER)->count()],
+                'wasteRecords' => ['value' => WasteRecord::query()->count()],
+                'pendingRequests' => ['value' => CollectionRequest::query()->where('status', CollectionRequest::STATUS_PENDING)->count()],
+                'completedRequests' => ['value' => CollectionRequest::query()->where('status', CollectionRequest::STATUS_COMPLETED)->count()],
+            ],
+        ];
     }
 
     /**
@@ -25,7 +36,7 @@ class PlatformScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Get Started';
+        return 'Dashboard administrativo';
     }
 
     /**
@@ -33,17 +44,7 @@ class PlatformScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Welcome to your Orchid application.';
-    }
-
-    /**
-     * The screen's action buttons.
-     *
-     * @return Action[]
-     */
-    public function commandBar(): iterable
-    {
-        return [];
+        return 'Visão geral do Cultive Mais.';
     }
 
     /**
@@ -54,8 +55,14 @@ class PlatformScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::view('platform::partials.update-assets'),
-            Layout::view('platform::partials.welcome'),
+            Layout::metrics([
+                'Total de usuários' => 'metrics.users',
+                'Total de moradores' => 'metrics.residents',
+                'Total de parceiros' => 'metrics.partners',
+                'Total de resíduos' => 'metrics.wasteRecords',
+                'Solicitações pendentes' => 'metrics.pendingRequests',
+                'Coletas concluídas' => 'metrics.completedRequests',
+            ]),
         ];
     }
 }
