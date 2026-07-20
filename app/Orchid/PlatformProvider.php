@@ -29,7 +29,7 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
-            Menu::make('Dashboard')
+            Menu::make('Painel')
                 ->icon('bs.speedometer2')
                 ->title('Administração')
                 ->route(config('platform.index')),
@@ -69,7 +69,7 @@ class PlatformProvider extends OrchidServiceProvider
     public function permissions(): array
     {
         return [
-            ItemPermission::group(__('System'))
+            ItemPermission::group('Sistema')
                 ->addPermission('platform.systems.users', 'Usuários')
                 ->addPermission('platform.categories', 'Categorias de resíduos')
                 ->addPermission('platform.collection-points', 'Pontos de coleta')

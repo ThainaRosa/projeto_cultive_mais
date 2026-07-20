@@ -32,12 +32,8 @@
                         <h2 class="mt-6 text-xl font-bold text-emerald-950">{{ $point->name }}</h2>
                         <p class="mt-3 leading-7 text-stone-600">{{ $point->address }}<br>{{ $point->neighborhood }} — {{ $point->city }}/{{ $point->state }}</p>
                         <dl class="mt-6 space-y-3 border-t border-stone-100 pt-5 text-sm">
-                            @if ($point->opening_hours)
-                                <div><dt class="font-bold text-emerald-950">Horário</dt><dd class="mt-1 text-stone-600">{{ $point->opening_hours }}</dd></div>
-                            @endif
-                            @if ($point->phone)
-                                <div><dt class="font-bold text-emerald-950">Telefone</dt><dd class="mt-1 text-stone-600">{{ $point->phone }}</dd></div>
-                            @endif
+                            <div><dt class="font-bold text-emerald-950">Horário</dt><dd class="mt-1 text-stone-600">{{ $point->opening_hours ?: 'Não informado' }}</dd></div>
+                            <div><dt class="font-bold text-emerald-950">Telefone</dt><dd class="mt-1 text-stone-600">{{ $point->phone ?: 'Não informado' }}</dd></div>
                         </dl>
                     </article>
                 @empty

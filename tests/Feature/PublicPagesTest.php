@@ -41,6 +41,7 @@ class PublicPagesTest extends TestCase
         $this->get(route('collection-points'))
             ->assertOk()
             ->assertSee('Ponto Ativo')
+            ->assertSee('Não informado')
             ->assertDontSee('Ponto Inativo');
     }
 }

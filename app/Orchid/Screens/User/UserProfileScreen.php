@@ -38,7 +38,7 @@ class UserProfileScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'My Account';
+        return 'Minha conta';
     }
 
     /**
@@ -46,7 +46,7 @@ class UserProfileScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Update your account details such as name, email address and password';
+        return 'Atualize seu nome, endereço de e-mail e senha';
     }
 
     /**
@@ -57,13 +57,13 @@ class UserProfileScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make('Back to my account')
+            Button::make('Voltar para minha conta')
                 ->novalidate()
                 ->canSee(Impersonation::isSwitch())
                 ->icon('bs.people')
                 ->route('platform.switch.logout'),
 
-            Button::make('Sign out')
+            Button::make('Sair')
                 ->novalidate()
                 ->icon('bs.box-arrow-left')
                 ->route('platform.logout'),
@@ -77,20 +77,20 @@ class UserProfileScreen extends Screen
     {
         return [
             Layout::block(UserEditLayout::class)
-                ->title(__('Profile Information'))
-                ->description(__("Update your account's profile information and email address."))
+                ->title('Informações do perfil')
+                ->description('Atualize o nome e o endereço de e-mail da sua conta.')
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make('Salvar')
                         ->type(Color::BASIC())
                         ->icon('bs.check-circle')
                         ->method('save')
                 ),
 
             Layout::block(ProfilePasswordLayout::class)
-                ->title(__('Update Password'))
-                ->description(__('Ensure your account is using a long, random password to stay secure.'))
+                ->title('Atualizar senha')
+                ->description('Use uma senha longa e difícil de adivinhar para proteger sua conta.')
                 ->commands(
-                    Button::make(__('Update password'))
+                    Button::make('Atualizar senha')
                         ->type(Color::BASIC())
                         ->icon('bs.check-circle')
                         ->method('changePassword')
@@ -112,7 +112,7 @@ class UserProfileScreen extends Screen
             ->fill($request->get('user'))
             ->save();
 
-        Toast::info(__('Profile updated.'));
+        Toast::info('Perfil atualizado.');
     }
 
     public function changePassword(Request $request): void
@@ -127,6 +127,6 @@ class UserProfileScreen extends Screen
             $user->password = Hash::make($request->get('password'));
         })->save();
 
-        Toast::info(__('Password changed.'));
+        Toast::info('Senha alterada.');
     }
 }

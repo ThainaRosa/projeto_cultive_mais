@@ -1,35 +1,108 @@
 # Cultive Mais
 
-Plataforma web para o gerenciamento de resíduos orgânicos e apoio à agricultura familiar no contexto de Cotia/SP.
+O Cultive Mais é uma plataforma web que conecta moradores e parceiros para facilitar o encaminhamento e a coleta de resíduos orgânicos em Cotia/SP. O sistema ajuda a reduzir o descarte inadequado, incentiva o reaproveitamento dos resíduos e divulga pontos de coleta locais.
 
-## Plano técnico
+## Tecnologias
 
-O desenvolvimento será realizado em incrementos pequenos, cada um validado e versionado localmente:
+- PHP 8.2 ou superior e Laravel 12
+- MySQL
+- Blade, Tailwind CSS e Alpine.js
+- Laravel Breeze para autenticação
+- Orchid para administração
+- Vite e npm
+- PHPUnit
 
-1. Preparação do ambiente Laravel e configuração segura para MySQL.
-2. Orchid para a administração e autenticação Blade para a área pública.
-3. Papéis centralizados (`admin`, `resident` e `partner`), policies e controle de acesso no backend.
-4. Modelagem com Eloquent, migrations, enums, factories e seeders para usuários, endereços, resíduos, pontos e coletas.
-5. Fluxos públicos para perfil, endereços, resíduos e solicitações de coleta, com validação por Form Requests.
-6. Serviço transacional para transições de status e histórico de coletas.
-7. Área do parceiro, mapa acessível com Leaflet/OpenStreetMap e telas administrativas Orchid.
-8. Dashboard de indicadores, testes automatizados, revisão de segurança e documentação de uso.
+## Instalação
 
-## Requisitos atuais
+Pré-requisitos: PHP, Composer, Node.js, npm e MySQL.
 
-- PHP 8.2 ou superior
-- Composer
-- Node.js e npm
-- MySQL 8 ou compatível
+```bash
+git clone <url-do-repositorio>
+cd projeto_cultive_mais
+composer install
+npm install
+```
 
-> As credenciais locais pertencem exclusivamente ao arquivo `.env`, que não é versionado. Use `.env.example` como ponto de partida.
+Copie o arquivo de ambiente e gere a chave da aplicação:
 
-## Administração
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-O painel administrativo está disponível em `/admin`. Após configurar o banco e executar as migrations, crie o primeiro administrador localmente com:
+No Windows, use `copy .env.example .env` no lugar de `cp`.
+
+## Configuração do banco
+
+Crie um banco MySQL e ajuste estas variáveis no arquivo `.env`:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=cultive_mais
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Crie as tabelas e os dados iniciais:
+
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+O seed cadastra as categorias de resíduos orgânicos e três pontos de coleta fictícios em Cotia/SP.
+
+## Administrador Orchid
+
+O painel está disponível em `/admin`. Para criar um administrador, execute:
 
 ```bash
 php artisan orchid:admin
 ```
 
-O comando solicita nome, e-mail e senha de forma interativa; nenhuma credencial padrão é incluída no projeto.
+Informe nome, e-mail e senha quando solicitado. O projeto não possui credenciais padrão.
+
+## Executando o projeto
+
+Em dois terminais, execute:
+
+```bash
+php artisan serve
+```
+
+```bash
+npm run dev
+```
+
+Para gerar os recursos otimizados para produção:
+
+```bash
+npm run build
+```
+
+## Testes e formatação
+
+```bash
+php artisan test
+vendor/bin/pint
+```
+
+No Windows, o formatador também pode ser executado com `vendor\bin\pint`.
+
+## Perfis disponíveis
+
+- `resident`: morador cadastrado pelo formulário público.
+- `partner`: parceiro responsável por aceitar e realizar coletas.
+- `admin`: administrador com acesso ao Orchid.
+
+## Funcionalidades
+
+- Páginas públicas sobre o projeto, resíduos orgânicos e pontos de coleta ativos.
+- Cadastro e login de moradores.
+- Cadastro, edição, visualização e cancelamento de resíduos pelo morador.
+- Criação, acompanhamento e cancelamento de solicitações de coleta.
+- Consulta, aceite, agendamento, conclusão e cancelamento de coletas pelo parceiro.
+- Administração de usuários, categorias, pontos de coleta, resíduos e solicitações no Orchid.
+- Dashboard administrativo com indicadores básicos do sistema.

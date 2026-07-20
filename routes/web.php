@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Partner\CollectionRequestController as PartnerCollectionRequestController;
 use App\Http\Controllers\Partner\DashboardController as PartnerDashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Resident\CollectionRequestController;
 use App\Http\Controllers\Resident\DashboardController as ResidentDashboardController;
 use App\Http\Controllers\Resident\WasteRecordController;
@@ -59,3 +60,11 @@ Route::middleware(['auth', 'verified', 'partner'])
         Route::patch('/solicitacoes/{collectionRequest}/concluir', [PartnerCollectionRequestController::class, 'complete'])->name('collection-requests.complete');
         Route::patch('/solicitacoes/{collectionRequest}/cancelar', [PartnerCollectionRequestController::class, 'cancel'])->name('collection-requests.cancel');
     });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

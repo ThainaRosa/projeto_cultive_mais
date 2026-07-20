@@ -48,7 +48,7 @@ Route::screen('profile', UserProfileScreen::class)
     ->name('platform.profile')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
-        ->push(__('Profile'), route('platform.profile')));
+        ->push('Perfil', route('platform.profile')));
 
 // Platform > System > Users > User
 Route::screen('users/{user}/edit', UserEditScreen::class)
@@ -62,7 +62,7 @@ Route::screen('users', UserListScreen::class)
     ->name('platform.systems.users')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
-        ->push(__('Users'), route('platform.systems.users')));
+        ->push('Usuários', route('platform.systems.users')));
 
 Route::screen('categories/create', WasteCategoryEditScreen::class)
     ->name('platform.categories.create');
